@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { ReservationService } from '../reservation/reservation.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Reservation } from '../models/reservation';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ReservationService } from '../reservation/reservation.service';
 
 @Component({
   selector: 'app-reservation-form',
@@ -32,30 +32,30 @@ export class ReservationFormComponent implements OnInit {
 
     let id = this.activatedRoute.snapshot.paramMap.get('id')
 
-    // if(id){
-    //   let reservation = this.reservationService.getReservation(id)
+    if(id){
+      let reservation = this.reservationService.getReservation(id)
 
-    //   if(reservation)
-    //     this.reservationForm.patchValue(reservation)
-    // }
+      if(reservation)
+        this.reservationForm.patchValue(reservation)
+    }
   }
 
   onSubmit() {
     if(this.reservationForm.valid){
-      console.log('The form is valid')
       let reservation: Reservation = this.reservationForm.value;
-      this.reservationService.addReservation(reservation)
+      
 
       let id = this.activatedRoute.snapshot.paramMap.get('id')
 
-      // if(id){
-      //   // Update
-      //   this.reservationService.updateReservation(id, reservation)
-      // } else {
-      //   // New
-      //   this.reservationService.addReservation(reservation)   
+      if(id){
+        // Update
+        this.reservationService.updateReservation(id, reservation)
+      } else {
+        // New
+        this.reservationService.addReservation(reservation)   
+        console.log(" New reservation has ben added")
 
-      // }
+      }
 
       this.router.navigate(['/list'])
     }
